@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Lista della spesa</string>
+    <string name="add_button">Aggiungi</string>
+    <string name="input_esempio">Esempio</string>
+    <string-array name="spesa">
+        <item>Birra</item>
+        <item>Latte</item>
+        <item>Pane</item>
+    </string-array>
+</resources>
