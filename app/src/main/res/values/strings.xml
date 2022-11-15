@@ -1,10 +1,12 @@
 <resources>
-    <string name="app_name">Lista della spesa</string>
-    <string name="add_button">Aggiungi</string>
-    <string name="input_esempio">Esempio</string>
-    <string-array name="spesa">
-        <item>Birra</item>
-        <item>Latte</item>
-        <item>Pane</item>
+    <string name="app_name">Shopping List</string>
+    <string name="add_button">Add</string>
+    <string name="input_example">Shopping item</string>
+    <string name="removed_item">Removed %1$s</string>
+    <string name="list_total_count">Total elements %1$d</string>
+    <string-array name="shopping_list">
+        <item>Beer</item>
+        <item>Milk</item>
+        <item>Bread</item>
     </string-array>
 </resources>
