@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
@@ -8,20 +9,22 @@
     <fragment
         android:id="@+id/itemsListFragment"
         android:name="com.example.myapplication.ItemsListFragment"
-        android:label="fragment_items_list"
+        android:label="Shopping List"
         tools:layout="@layout/fragment_items_list" >
         <action
             android:id="@+id/action_itemsListFragment_to_itemDetailFragment"
             app:destination="@id/itemDetailFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/itemDetailFragment"
         android:name="com.example.myapplication.ItemDetailFragment"
-        android:label="fragment_item_detail"
+        android:label="Item Detail"
         tools:layout="@layout/fragment_item_detail" >
         <argument
             android:name="item"
             app:argType="com.example.myapplication.Item"
             app:nullable="true" />
     </fragment>
+
 </navigation>

@@ -44,7 +44,7 @@ class ItemsListFragment : Fragment() {
             list.removeAt(position)
             itemsList.invalidateViews()
             totalCount.text = getString(R.string.removed_item, item.toString())
-            true
+            true // returning true to consume the click event, otherwise onClick will be called next
         }
 
         view.findViewById<Button>(R.id.addButton).setOnClickListener {

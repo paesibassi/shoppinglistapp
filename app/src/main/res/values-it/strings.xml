@@ -5,4 +5,11 @@
     <string name="list_total_count">Elementi totali %1$d</string>
     <string name="removed_item">Rimosso %1$s</string>
     <string name="add_button">Aggiungi</string>
+    <string name="menu_help_icon">Aiuto</string>
+    <string name="menu_settings_icon">Impostazioni</string>
+    <string-array name="shopping_list">
+        <item>Birra</item>
+        <item>Latte</item>
+        <item>Pane</item>
+    </string-array>
 </resources>

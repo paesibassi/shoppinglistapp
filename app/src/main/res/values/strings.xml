@@ -4,9 +4,11 @@
     <string name="input_example">Shopping item</string>
     <string name="removed_item">Removed %1$s</string>
     <string name="list_total_count">Total elements %1$d</string>
+    <string name="menu_help_icon">Help</string>
+    <string name="menu_settings_icon">Settings</string>
     <string-array name="shopping_list">
         <item>Beer</item>
-        <item>Milk</item>
         <item>Bread</item>
+        <item>Milk</item>
     </string-array>
 </resources>
