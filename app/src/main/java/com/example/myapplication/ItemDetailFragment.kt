@@ -15,7 +15,9 @@ class ItemDetailFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_item_detail, container, false)
         val itemName = view.findViewById<TextView>(R.id.itemName)
-        itemName.text = ItemDetailFragmentArgs.fromBundle(requireArguments()).item.toString()
+        itemName.text = ItemDetailFragmentArgs.fromBundle(requireArguments()).item?.name.toString()
+        val itemQuantity = view.findViewById<TextView>(R.id.itemQuantity)
+        itemQuantity.text = ItemDetailFragmentArgs.fromBundle(requireArguments()).item?.quantity.toString()
         return view
     }
 }
