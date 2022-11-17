@@ -5,19 +5,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import com.example.myapplication.databinding.FragmentItemDetailBinding
 
 class ItemDetailFragment : Fragment() {
+    private var _binding: FragmentItemDetailBinding? = null // This property is only valid between onCreateView and onDestroyView
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_item_detail, container, false)
-        val itemName = view.findViewById<TextView>(R.id.itemName)
-        itemName.text = ItemDetailFragmentArgs.fromBundle(requireArguments()).item?.name.toString()
-        val itemQuantity = view.findViewById<TextView>(R.id.itemQuantity)
-        itemQuantity.text = ItemDetailFragmentArgs.fromBundle(requireArguments()).item?.quantity.toString()
+        _binding = FragmentItemDetailBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        binding.itemName.text = ItemDetailFragmentArgs.fromBundle(requireArguments()).item?.name.toString()
+        binding.itemQuantity.text = ItemDetailFragmentArgs.fromBundle(requireArguments()).item?.quantity.toString()
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
