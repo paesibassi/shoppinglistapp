@@ -6,4 +6,5 @@
     <string name="list_total_count">Total elements %1$d</string>
     <string name="menu_help_icon">Help</string>
     <string name="menu_settings_icon">Settings</string>
+    <string name="undo_remove">Nevermind, %1$s is back in the list</string>
 </resources>

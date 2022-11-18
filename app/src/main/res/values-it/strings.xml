@@ -7,4 +7,5 @@
     <string name="add_button">Aggiungi</string>
     <string name="menu_help_icon">Aiuto</string>
     <string name="menu_settings_icon">Impostazioni</string>
+    <string name="undo_remove">Come non detto, %1$s è tornato</string>
 </resources>

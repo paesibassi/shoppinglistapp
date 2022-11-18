@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.myapplication.databinding.FragmentItemsListBinding
+import com.google.android.material.snackbar.Snackbar
 
 class ItemsListFragment : Fragment() {
     private var _binding: FragmentItemsListBinding? = null // This property is only valid between onCreateView and onDestroyView
@@ -18,14 +20,14 @@ class ItemsListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentItemsListBinding.inflate(inflater, container, false)
         val view = binding.root
         viewModel = ViewModelProvider(this).get(ItemsListViewModel::class.java)
 
         binding.totalCount.text = countItems(viewModel.list)
 
-        binding.itemsList.adapter = ArrayAdapter<Item>(view.context, android.R.layout.simple_list_item_1, viewModel.list)
+        binding.itemsList.adapter = ArrayAdapter(view.context, android.R.layout.simple_list_item_1, viewModel.list)
         binding.itemsList.setOnItemClickListener { parent, _, position, _ ->
             val item: Item? = parent.getItemAtPosition(position) as? Item
             val action = ItemsListFragmentDirections.actionItemsListFragmentToItemDetailFragment(item)
@@ -33,10 +35,21 @@ class ItemsListFragment : Fragment() {
         }
 
         binding.itemsList.setOnItemLongClickListener { parent, _, position, _ ->
-            val item = parent.getItemAtPosition(position)
+            val item = parent.getItemAtPosition(position) as Item
+            val undo = {
+                viewModel.list.add(position, item)
+                binding.itemsList.invalidateViews()
+                binding.totalCount.text = countItems(viewModel.list)
+                Toast.makeText(activity, getString(R.string.undo_remove, item.name), Toast.LENGTH_SHORT).show()
+            }
+
             viewModel.list.removeAt(position)
             binding.itemsList.invalidateViews()
-            binding.totalCount.text = getString(R.string.removed_item, item.toString())
+            binding.totalCount.text = countItems(viewModel.list)
+            Snackbar.make(parent, getString(R.string.removed_item, item.toString()), Snackbar.LENGTH_LONG)
+                .setAnchorView(binding.totalCount)
+                .setAction("Undo", undo as View.OnClickListener)
+                .show()
             true // returning true to consume the click event, otherwise onClick will be called next
         }
 
