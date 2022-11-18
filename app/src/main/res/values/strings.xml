@@ -6,9 +6,4 @@
     <string name="list_total_count">Total elements %1$d</string>
     <string name="menu_help_icon">Help</string>
     <string name="menu_settings_icon">Settings</string>
-    <string-array name="shopping_list">
-        <item>Beer</item>
-        <item>Bread</item>
-        <item>Milk</item>
-    </string-array>
 </resources>

@@ -6,13 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.myapplication.databinding.FragmentItemsListBinding
 
 class ItemsListFragment : Fragment() {
-    private lateinit var list: MutableList<Item>
     private var _binding: FragmentItemsListBinding? = null // This property is only valid between onCreateView and onDestroyView
     private val binding get() = _binding!!
+    private lateinit var viewModel: ItemsListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -20,18 +21,11 @@ class ItemsListFragment : Fragment() {
     ): View? {
         _binding = FragmentItemsListBinding.inflate(inflater, container, false)
         val view = binding.root
+        viewModel = ViewModelProvider(this).get(ItemsListViewModel::class.java)
 
-        list = if (savedInstanceState != null) {
-            val items = savedInstanceState.getParcelableArray("items_list")?.filterIsInstance<Item>() ?: listOf<Item>()
-            items.toMutableList()
-        } else {
-            val initial: Array<String> = resources.getStringArray(R.array.shopping_list)
-            initial.map { Item(it) }.toMutableList()
-        }
+        binding.totalCount.text = countItems(viewModel.list)
 
-        binding.totalCount.text = countItems(list)
-
-        binding.itemsList.adapter = ArrayAdapter<Item>(view.context, android.R.layout.simple_list_item_1, list)
+        binding.itemsList.adapter = ArrayAdapter<Item>(view.context, android.R.layout.simple_list_item_1, viewModel.list)
         binding.itemsList.setOnItemClickListener { parent, _, position, _ ->
             val item: Item? = parent.getItemAtPosition(position) as? Item
             val action = ItemsListFragmentDirections.actionItemsListFragmentToItemDetailFragment(item)
@@ -40,7 +34,7 @@ class ItemsListFragment : Fragment() {
 
         binding.itemsList.setOnItemLongClickListener { parent, _, position, _ ->
             val item = parent.getItemAtPosition(position)
-            list.removeAt(position)
+            viewModel.list.removeAt(position)
             binding.itemsList.invalidateViews()
             binding.totalCount.text = getString(R.string.removed_item, item.toString())
             true // returning true to consume the click event, otherwise onClick will be called next
@@ -53,20 +47,15 @@ class ItemsListFragment : Fragment() {
                 .trim()
                 .replaceFirstChar { it.uppercase() }
             val newItem = Item(input)
-            if (list.contains(newItem)) {
-                list[list.indexOf(newItem)].quantity += 1
+            if (viewModel.list.contains(newItem)) {
+                viewModel.list[viewModel.list.indexOf(newItem)].quantity += 1
             } else {
-                list.add(newItem)
+                viewModel.list.add(newItem)
             }
             binding.itemsList.invalidateViews()
-            binding.totalCount.text = countItems(list)
+            binding.totalCount.text = countItems(viewModel.list)
         }
         return view
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelableArray("items_list", list.toTypedArray())
-        super.onSaveInstanceState(outState)
     }
 
     override fun onDestroyView() {
@@ -78,4 +67,3 @@ class ItemsListFragment : Fragment() {
         return getString(R.string.list_total_count, items.count())
     }
 }
-
