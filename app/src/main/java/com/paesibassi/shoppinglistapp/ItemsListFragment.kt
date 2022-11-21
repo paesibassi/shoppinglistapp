@@ -69,6 +69,7 @@ class ItemsListFragment : Fragment() {
             viewModel.addItem(input)
             binding.itemsList.invalidateViews()
         }
+
         return view
     }
 

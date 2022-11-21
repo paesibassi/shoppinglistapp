@@ -2,47 +2,37 @@ package com.paesibassi.shoppinglistapp
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 
 class ItemsListViewModel : ViewModel() {
     private val _list = MutableLiveData(
-        mutableListOf(
-            Item("Birra"), Item("Patatine"), Item("Gelato")
-        )
+        mutableListOf(Item("Birra"), Item("Patatine"), Item("Gelato"))
     )
     val list: LiveData<MutableList<Item>>
         get() = _list
 
-    private val _countItems = MutableLiveData<Int>()
-    val countItems: LiveData<Int>
-        get() = _countItems
-
-    init {
-        _countItems.value = this._list.value?.count()
-    }
+    val countItems: LiveData<Int> = Transformations.map(list) { it.size }
 
     fun addItem(input: String, quantity: Int = 1, position: Int = 0) {
         val item = Item(input
             .trim()
             .replaceFirstChar { it.uppercase() },
             quantity)
-        this._list.value?.let {
-            if (it.contains(item)) {
-                it[it.indexOf(item)].quantity++
+        _list.value = _list.value?.apply {
+            if (this.contains(item)) {
+                this[this.indexOf(item)].quantity++
             } else {
-                val pos = if (position != 0) position else it.count()
-                it.add(pos, item)
-                _countItems.value = it.count()
+                val pos = if (position != 0) position else this.size
+                this.add(pos, item)
             }
         }
     }
 
     fun removeItemAt(position: Int): Item? {
-        val item = this._list.value?.let {
-            val item = it[position]
-            it.removeAt(position)
-            _countItems.value = it.count()
-            item
+        val item = _list.value?.get(position)
+        _list.value = this._list.value?.apply {
+            this.removeAt(position)
         }
         return item
     }
