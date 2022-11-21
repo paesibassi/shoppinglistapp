@@ -9,4 +9,9 @@
     <string name="menu_settings_icon">Impostazioni</string>
     <string name="undo_remove">Come non detto, %1$s è tornato</string>
     <string name="undo_link">Annulla</string>
+    <string name="item_detail_title">Dettaglio articolo</string>
+    <string name="settings_title">Impostazioni</string>
+    <string name="general_settings_header">Generale</string>
+    <string name="hearts_title">Mostra un cuore a fianco del tuo nome</string>
+    <string name="name_title">Il tuo nome</string>
 </resources>

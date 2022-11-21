@@ -8,4 +8,12 @@
     <string name="menu_settings_icon">Settings</string>
     <string name="undo_remove">Nevermind, %1$s is back in the list</string>
     <string name="undo_link">Undo</string>
+    <string name="username" translatable="false">%1$s</string>
+    <string name="item_detail_title">Item Detail</string>
+    <string name="settings_title">Settings</string>
+    <!-- Preference Titles -->
+    <string name="general_settings_header">General</string>
+    <!-- General Preferences -->
+    <string name="name_title">Your name</string>
+    <string name="hearts_title">Show an heart with your name</string>
 </resources>

@@ -14,17 +14,25 @@
         <action
             android:id="@+id/action_itemsListFragment_to_itemDetailFragment"
             app:destination="@id/itemDetailFragment" />
+        <action
+            android:id="@+id/action_itemsListFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/itemDetailFragment"
         android:name="com.paesibassi.shoppinglistapp.ItemDetailFragment"
-        android:label="Item Detail"
+        android:label="@string/item_detail_title"
         tools:layout="@layout/fragment_item_detail" >
         <argument
             android:name="item"
             app:argType="com.paesibassi.shoppinglistapp.Item"
             app:nullable="true" />
     </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.paesibassi.shoppinglistapp.SettingsFragment"
+        android:label="@string/settings_title" />
 
 </navigation>

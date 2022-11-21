@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.preference.PreferenceManager
 import com.paesibassi.shoppinglistapp.databinding.FragmentItemsListBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -27,10 +28,15 @@ class ItemsListFragment : Fragment() {
         binding.itemsListViewModel = viewModel // data binding
         binding.lifecycleOwner = viewLifecycleOwner // live data for data binding
 
+        val namePref = PreferenceManager.getDefaultSharedPreferences(requireActivity()).getString("name", null)
+        namePref?.let {
+            val hearthsPref = PreferenceManager.getDefaultSharedPreferences(requireActivity()).getBoolean("hearts", false)
+            val nameStr = if (hearthsPref) "$namePref \u2661" else "$namePref"
+            binding.userName.text = getString(R.string.username, nameStr)
+        }
 
         viewModel.list.value?.let {
             val adapter = ArrayAdapter(view.context, android.R.layout.simple_list_item_1, it)
-            adapter.count
             binding.itemsList.adapter = adapter
         }
         binding.itemsList.setOnItemClickListener { parent, _, position, _ ->
