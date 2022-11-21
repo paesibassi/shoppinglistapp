@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.paesibassi.shoppinglistapp
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -11,7 +11,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
-import com.example.myapplication.databinding.ActivityMainBinding
+import com.paesibassi.shoppinglistapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 

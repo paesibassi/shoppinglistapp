@@ -1,40 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="12dp"
     tools:context=".ItemsListFragment">
+    <data>
+        <variable
+            name="itemsListViewModel"
+            type="com.paesibassi.shoppinglistapp.ItemsListViewModel" />
+    </data>
 
-    <EditText
-        android:id="@+id/editTextItem"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/input_example"
-        android:inputType="textAutoCorrect"
-        android:importantForAutofill="no" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="12dp">
 
-    <Button
-        android:id="@+id/addButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/add_button" />
+        <EditText
+            android:id="@+id/editTextItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/input_example"
+            android:importantForAutofill="no"
+            android:inputType="textAutoCorrect" />
 
-    <ListView
-        android:id="@+id/itemsList"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        <Button
+            android:id="@+id/addButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/add_button" />
 
-    <TextView
-        android:id="@+id/totalCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        tools:text="Number of items: 4" />
+        <ListView
+            android:id="@+id/itemsList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/totalCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:text="@{@string/list_total_count(itemsListViewModel.countItems)}" />
+
+    </LinearLayout>
+
+</layout>

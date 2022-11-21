@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Shopping List</string>
+    <string name="app_name">Shopping List App</string>
     <string name="add_button">Add</string>
     <string name="input_example">Shopping item</string>
     <string name="removed_item">Removed %1$s</string>
@@ -7,4 +7,5 @@
     <string name="menu_help_icon">Help</string>
     <string name="menu_settings_icon">Settings</string>
     <string name="undo_remove">Nevermind, %1$s is back in the list</string>
+    <string name="undo_link">Undo</string>
 </resources>

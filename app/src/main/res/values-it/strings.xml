@@ -8,4 +8,5 @@
     <string name="menu_help_icon">Aiuto</string>
     <string name="menu_settings_icon">Impostazioni</string>
     <string name="undo_remove">Come non detto, %1$s è tornato</string>
+    <string name="undo_link">Annulla</string>
 </resources>

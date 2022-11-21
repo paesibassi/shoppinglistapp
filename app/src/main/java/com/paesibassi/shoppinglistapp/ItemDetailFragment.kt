@@ -1,11 +1,11 @@
-package com.example.myapplication
+package com.paesibassi.shoppinglistapp
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.myapplication.databinding.FragmentItemDetailBinding
+import com.paesibassi.shoppinglistapp.databinding.FragmentItemDetailBinding
 
 class ItemDetailFragment : Fragment() {
     private var _binding: FragmentItemDetailBinding? = null // This property is only valid between onCreateView and onDestroyView
