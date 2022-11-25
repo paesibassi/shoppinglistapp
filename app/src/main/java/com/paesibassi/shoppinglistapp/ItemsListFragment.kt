@@ -24,10 +24,14 @@ class ItemsListFragment : Fragment() {
     ): View {
         _binding = FragmentItemsListBinding.inflate(inflater, container, false)
         val view = binding.root
-        viewModel = ViewModelProvider(this)[ItemsListViewModel::class.java]
+        val application = requireNotNull(this.activity).application
+        val dao = ItemsDatabase.getInstance(application).itemsDao
+        val viewModelFactory = ItemsListViewModelFactory(dao)
+        viewModel = ViewModelProvider(this, viewModelFactory)[ItemsListViewModel::class.java]
         binding.itemsListViewModel = viewModel // data binding
         binding.lifecycleOwner = viewLifecycleOwner // live data for data binding
 
+        // name preference shown in UI
         val namePref = PreferenceManager.getDefaultSharedPreferences(requireActivity()).getString("name", null)
         namePref?.let {
             val hearthsPref = PreferenceManager.getDefaultSharedPreferences(requireActivity()).getBoolean("hearts", false)
@@ -35,10 +39,12 @@ class ItemsListFragment : Fragment() {
             binding.userName.text = getString(R.string.username, nameStr)
         }
 
-        viewModel.list.value?.let {
+        // ListView
+        viewModel.items.observe(viewLifecycleOwner) {
             val adapter = ArrayAdapter(view.context, android.R.layout.simple_list_item_1, it)
             binding.itemsList.adapter = adapter
         }
+
         binding.itemsList.setOnItemClickListener { parent, _, position, _ ->
             val item: Item? = parent.getItemAtPosition(position) as? Item
             val action =
@@ -48,7 +54,6 @@ class ItemsListFragment : Fragment() {
 
         binding.itemsList.setOnItemLongClickListener { parent, _, position, _ ->
             val item = viewModel.removeItemAt(position)
-            binding.itemsList.invalidateViews()
             if (item != null) {
                 Snackbar.make(
                     parent,
@@ -57,8 +62,7 @@ class ItemsListFragment : Fragment() {
                 )
                 .setAnchorView(binding.totalCount)
                 .setAction(getString(R.string.undo_link)) {
-                    viewModel.addItem(item.name, item.quantity, position)
-                    binding.itemsList.invalidateViews()
+                    viewModel.addItem(item.name, item.quantity)
                     Toast.makeText(
                         activity,
                         getString(R.string.undo_remove, item.name),
@@ -70,6 +74,7 @@ class ItemsListFragment : Fragment() {
             true // returning true to consume the click event, otherwise onClick will be called next
         }
 
+        // addButton
         binding.addButton.setOnClickListener {
             val input = binding.editTextItem.text.toString()
             viewModel.addItem(input)

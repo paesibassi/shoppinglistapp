@@ -1,38 +1,33 @@
 package com.paesibassi.shoppinglistapp
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import kotlinx.coroutines.launch
 
-class ItemsListViewModel : ViewModel() {
-    private val _list = MutableLiveData(
-        mutableListOf(Item("Birra"), Item("Patatine"), Item("Gelato"))
-    )
-    val list: LiveData<MutableList<Item>>
-        get() = _list
+class ItemsListViewModel(private val dao: ItemsDao) : ViewModel() {
 
-    val countItems: LiveData<Int> = Transformations.map(list) { it.size }
+    val items: LiveData<List<Item>> = dao.getAll()
+    val countItems: LiveData<Int> = Transformations.map(items) { it.size }
 
-    fun addItem(input: String, quantity: Int = 1, position: Int = 0) {
-        val item = Item(input
-            .trim()
-            .replaceFirstChar { it.uppercase() },
-            quantity)
-        _list.value = _list.value?.apply {
-            if (this.contains(item)) {
-                this[this.indexOf(item)].quantity++
-            } else {
-                val pos = if (position != 0) position else this.size
-                this.add(pos, item)
+    fun addItem(input: String, quantity: Int = 1) {
+        val newItem = Item(
+            input.trim().replaceFirstChar { it.uppercase() },
+            quantity
+        )
+        if (items.value?.contains(newItem) == true) { // checks by name
+            viewModelScope.launch {
+                val item = dao.getItemByName(newItem.name)
+                item.quantity = item.quantity.inc()
+                dao.update(item)
             }
+        } else {
+            viewModelScope.launch { dao.insert(newItem) }
         }
     }
 
     fun removeItemAt(position: Int): Item? {
-        val item = _list.value?.get(position)
-        _list.value = this._list.value?.apply {
-            this.removeAt(position)
+        val item = items.value?.get(position)
+        viewModelScope.launch {
+            item?.let { dao.delete(it) }
         }
         return item
     }
