@@ -24,6 +24,10 @@ class ItemsListViewModel(private val dao: ItemsDao) : ViewModel() {
         }
     }
 
+    fun removeItem(item: Item) {
+        viewModelScope.launch { dao.delete(item) }
+    }
+
     fun removeItemAt(position: Int): Item? {
         val item = items.value?.get(position)
         viewModelScope.launch {

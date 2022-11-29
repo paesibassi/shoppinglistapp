@@ -16,4 +16,6 @@
     <!-- General Preferences -->
     <string name="name_title">Your name</string>
     <string name="hearts_title">Show an heart with your name</string>
+    <string name="decrement_quantity">Decrement quantity</string>
+    <string name="increment_quantity">Increment quantity</string>
 </resources>

@@ -5,13 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.preference.PreferenceManager
-import com.paesibassi.shoppinglistapp.databinding.FragmentItemsListBinding
 import com.google.android.material.snackbar.Snackbar
+import com.paesibassi.shoppinglistapp.databinding.FragmentItemsListBinding
 
 class ItemsListFragment : Fragment() {
     private var _binding: FragmentItemsListBinding? = null // This property is only valid between onCreateView and onDestroyView
@@ -39,27 +38,19 @@ class ItemsListFragment : Fragment() {
             binding.userName.text = getString(R.string.username, nameStr)
         }
 
-        // ListView
-        viewModel.items.observe(viewLifecycleOwner) {
-            val adapter = ArrayAdapter(view.context, android.R.layout.simple_list_item_1, it)
-            binding.itemsList.adapter = adapter
-        }
-
-        binding.itemsList.setOnItemClickListener { parent, _, position, _ ->
-            val item: Item? = parent.getItemAtPosition(position) as? Item
+        val itemClickListener: (item: Item) -> Unit = { item ->
             val action =
                 ItemsListFragmentDirections.actionItemsListFragmentToItemDetailFragment(item)
             view.findNavController().navigate(action)
         }
 
-        binding.itemsList.setOnItemLongClickListener { parent, _, position, _ ->
-            val item = viewModel.removeItemAt(position)
-            if (item != null) {
-                Snackbar.make(
-                    parent,
-                    getString(R.string.removed_item, item.toString()),
-                    Snackbar.LENGTH_LONG
-                )
+        val itemLongClickListener: (item: Item) -> Boolean = { item ->
+            viewModel.removeItem(item)
+            Snackbar.make(
+                view,
+                getString(R.string.removed_item, item.toString()),
+                Snackbar.LENGTH_LONG
+            )
                 .setAnchorView(binding.totalCount)
                 .setAction(getString(R.string.undo_link)) {
                     viewModel.addItem(item.name, item.quantity)
@@ -70,15 +61,20 @@ class ItemsListFragment : Fragment() {
                     ).show()
                 }
                 .show()
-            }
             true // returning true to consume the click event, otherwise onClick will be called next
+        }
+
+        // RecyclerView
+        val adapter = ItemsAdapter(itemClickListener, itemLongClickListener)
+        binding.itemsList.adapter = adapter
+        viewModel.items.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
         }
 
         // addButton
         binding.addButton.setOnClickListener {
             val input = binding.editTextItem.text.toString()
             viewModel.addItem(input)
-            binding.itemsList.invalidateViews()
         }
 
         return view
