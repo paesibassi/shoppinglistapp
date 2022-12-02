@@ -8,7 +8,9 @@ import com.paesibassi.shoppinglistapp.databinding.ItemBinding
 
 class ItemsAdapter(
     private val itemClickListener: (item: Item) -> Unit,
-    private val itemLongClickListener: (item: Item) -> Boolean
+    private val itemLongClickListener: (item: Item) -> Boolean,
+    private val itemPlusButtonClickListener: (item: Item) -> Unit,
+    private val itemMinusButtonClickListener: (item: Item) -> Unit,
 ) :
     ListAdapter<Item, ItemsAdapter.ItemViewHolder>(DiffItemCallBack()) {
 
@@ -17,7 +19,13 @@ class ItemsAdapter(
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = getItem(position)
-        holder.dataBind(item, itemClickListener, itemLongClickListener)
+        holder.dataBind(
+            item,
+            itemClickListener,
+            itemLongClickListener,
+            itemPlusButtonClickListener,
+            itemMinusButtonClickListener,
+        )
     }
 
     class ItemViewHolder(private val binding: ItemBinding) :
@@ -34,11 +42,15 @@ class ItemsAdapter(
         fun dataBind(
             item: Item,
             itemClickListener: (item: Item) -> Unit,
-            itemLongClickListener: (item: Item) -> Boolean
+            itemLongClickListener: (item: Item) -> Boolean,
+            itemPlusButtonClickListener: (item: Item) -> Unit,
+            itemMinusButtonClickListener: (item: Item) -> Unit,
         ) {
             binding.item = item
             binding.root.setOnClickListener { itemClickListener(item) }
             binding.root.setOnLongClickListener { itemLongClickListener(item) }
+            binding.plusButton.setOnClickListener { itemPlusButtonClickListener(item) }
+            binding.minusButton.setOnClickListener { itemMinusButtonClickListener(item) }
         }
     }
 

@@ -13,11 +13,11 @@ class ItemsListViewModel(private val dao: ItemsDao) : ViewModel() {
             input.trim().replaceFirstChar { it.uppercase() },
             quantity
         )
-        if (items.value?.contains(newItem) == true) { // checks by name
+        val itemNames = items.value?.map { it.name }?.toList()
+        if (itemNames?.contains(newItem.name) == true) { // checks by name
             viewModelScope.launch {
                 val item = dao.getItemByName(newItem.name)
-                item.quantity = item.quantity.inc()
-                dao.update(item)
+                incrementQuantityForItem(item)
             }
         } else {
             viewModelScope.launch { dao.insert(newItem) }
@@ -34,5 +34,19 @@ class ItemsListViewModel(private val dao: ItemsDao) : ViewModel() {
             item?.let { dao.delete(it) }
         }
         return item
+    }
+
+    fun incrementQuantityForItem(item: Item) {
+        viewModelScope.launch {
+            item.quantity = item.quantity.inc()
+            dao.update(item)
+        }
+    }
+
+    fun decrementQuantityForItem(item: Item) {
+        viewModelScope.launch {
+            item.quantity = item.quantity.dec()
+            dao.update(item)
+        }
     }
 }

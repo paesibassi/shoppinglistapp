@@ -8,6 +8,9 @@ interface ItemsDao {
     @Query("SELECT * FROM items_table ORDER BY Id DESC")
     fun getAll(): LiveData<List<Item>>
 
+    @Query("SELECT * FROM items_table WHERE Id = :id")
+    fun getItemById(id: Long): LiveData<Item>
+
     @Query("SELECT * FROM items_table WHERE name = :name")
     suspend fun getItemByName(name: String): Item
 

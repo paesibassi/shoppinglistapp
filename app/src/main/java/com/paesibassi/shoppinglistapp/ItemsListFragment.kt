@@ -39,8 +39,7 @@ class ItemsListFragment : Fragment() {
         }
 
         val itemClickListener: (item: Item) -> Unit = { item ->
-            val action =
-                ItemsListFragmentDirections.actionItemsListFragmentToItemDetailFragment(item)
+            val action = ItemsListFragmentDirections.actionItemsListFragmentToItemDetailFragment(item.Id)
             view.findNavController().navigate(action)
         }
 
@@ -64,8 +63,21 @@ class ItemsListFragment : Fragment() {
             true // returning true to consume the click event, otherwise onClick will be called next
         }
 
+        val itemPlusButtonClickListener: (item: Item) -> Unit = { item ->
+            viewModel.incrementQuantityForItem(item)
+        }
+
+        val itemMinusButtonClickListener: (item: Item) -> Unit = { item ->
+            viewModel.decrementQuantityForItem(item)
+        }
+
         // RecyclerView
-        val adapter = ItemsAdapter(itemClickListener, itemLongClickListener)
+        val adapter = ItemsAdapter(
+            itemClickListener,
+            itemLongClickListener,
+            itemPlusButtonClickListener,
+            itemMinusButtonClickListener
+        )
         binding.itemsList.adapter = adapter
         viewModel.items.observe(viewLifecycleOwner) {
             adapter.submitList(it)
