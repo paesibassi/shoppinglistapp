@@ -9,4 +9,8 @@ data class Item(
     @ColumnInfo val name: String,
     @ColumnInfo var quantity: Int = 1,
     @PrimaryKey(autoGenerate = true) val Id: Long = 0L
-)
+) {
+    fun incrementQuantity(): Int = this.quantity++
+
+    fun decrementQuantity(): Int = this.quantity--
+}

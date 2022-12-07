@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -47,7 +48,7 @@ class ItemsListFragment : Fragment() {
             viewModel.removeItem(item)
             Snackbar.make(
                 view,
-                getString(R.string.removed_item, item.toString()),
+                getString(R.string.removed_item, item.name),
                 Snackbar.LENGTH_LONG
             )
                 .setAnchorView(binding.totalCount)
@@ -83,10 +84,20 @@ class ItemsListFragment : Fragment() {
             adapter.submitList(it)
         }
 
+        // editText
+        binding.editTextItem.setOnEditorActionListener { _, actionID, _ ->
+            if (actionID == EditorInfo.IME_ACTION_DONE) {
+                val input = binding.editTextItem.text.toString()
+                viewModel.addItem(input)
+                binding.editTextItem.text.clear()
+            }
+            true
+        }
         // addButton
         binding.addButton.setOnClickListener {
             val input = binding.editTextItem.text.toString()
             viewModel.addItem(input)
+            binding.editTextItem.text.clear()
         }
 
         return view

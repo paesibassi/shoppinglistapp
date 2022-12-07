@@ -9,17 +9,13 @@ class ItemsListViewModel(private val dao: ItemsDao) : ViewModel() {
     val countItems: LiveData<Int> = Transformations.map(items) { it.size }
 
     fun addItem(input: String, quantity: Int = 1) {
-        val newItem = Item(
-            input.trim().replaceFirstChar { it.uppercase() },
-            quantity
-        )
-        val itemNames = items.value?.map { it.name }?.toList()
-        if (itemNames?.contains(newItem.name) == true) { // checks by name
-            viewModelScope.launch {
-                val item = dao.getItemByName(newItem.name)
-                incrementQuantityForItem(item)
-            }
+        if (input == "") return
+        val itemName = input.trim().replaceFirstChar { it.uppercase() }
+        if (items.value?.map { it.name }?.contains(itemName) == true) { // checks if the item name exists already
+            val currentItem: Item? = items.value?.first { it.name == itemName }
+            incrementQuantityForItem(currentItem!!) // we know item is not null because we already found it
         } else {
+            val newItem = Item(itemName, quantity)
             viewModelScope.launch { dao.insert(newItem) }
         }
     }
@@ -38,15 +34,19 @@ class ItemsListViewModel(private val dao: ItemsDao) : ViewModel() {
 
     fun incrementQuantityForItem(item: Item) {
         viewModelScope.launch {
-            item.quantity = item.quantity.inc()
-            dao.update(item)
+            with(item.copy()) {
+                this.incrementQuantity()
+                dao.update(this)
+            }
         }
     }
 
     fun decrementQuantityForItem(item: Item) {
         viewModelScope.launch {
-            item.quantity = item.quantity.dec()
-            dao.update(item)
+            with(item.copy()) {
+                this.decrementQuantity()
+                dao.update(this)
+            }
         }
     }
 }

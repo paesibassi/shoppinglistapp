@@ -22,9 +22,11 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/input_example"
+            android:imeOptions="actionDone"
+            android:inputType="text|textAutoCorrect"
             android:importantForAutofill="no"
-            android:inputType="textAutoCorrect" />
-<!--        TODO EditText should have a maximum length and erase content on submission -->
+            android:maxLength="25"
+            android:maxLines="1" />
 
         <Button
             android:id="@+id/addButton"
@@ -32,7 +34,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/add_button" />
-<!--        TODO enter key should be captured for submission -->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/itemsList"
