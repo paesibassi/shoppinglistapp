@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
 import com.paesibassi.shoppinglistapp.databinding.FragmentItemsListBinding
@@ -40,8 +39,9 @@ class ItemsListFragment : Fragment() {
         }
 
         val itemClickListener: (item: Item) -> Unit = { item ->
-            val action = ItemsListFragmentDirections.actionItemsListFragmentToItemDetailFragment(item.Id)
-            view.findNavController().navigate(action)
+//            val action = ItemsListFragmentDirections.actionItemsListFragmentToItemDetailFragment(item.Id)
+//            view.findNavController().navigate(action)
+            viewModel.markItemDone(item)
         }
 
         val itemLongClickListener: (item: Item) -> Boolean = { item ->

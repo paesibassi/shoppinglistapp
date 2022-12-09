@@ -1,5 +1,6 @@
 package com.paesibassi.shoppinglistapp
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -51,7 +52,14 @@ class ItemsAdapter(
             binding.root.setOnLongClickListener { itemLongClickListener(item) }
             binding.plusButton.setOnClickListener { itemPlusButtonClickListener(item) }
             binding.minusButton.setOnClickListener { itemMinusButtonClickListener(item) }
+
+            if (item.done) {
+                binding.itemName.paintFlags = (binding.itemName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG)
+                binding.itemQuantity.paintFlags = (binding.itemQuantity.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG)
+            } else {
+                binding.itemName.paintFlags = (binding.itemName.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv())
+                binding.itemQuantity.paintFlags = (binding.itemQuantity.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv())
+            }
         }
     }
-
 }

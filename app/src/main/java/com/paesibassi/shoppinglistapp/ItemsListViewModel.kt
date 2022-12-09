@@ -24,14 +24,6 @@ class ItemsListViewModel(private val dao: ItemsDao) : ViewModel() {
         viewModelScope.launch { dao.delete(item) }
     }
 
-    fun removeItemAt(position: Int): Item? {
-        val item = items.value?.get(position)
-        viewModelScope.launch {
-            item?.let { dao.delete(it) }
-        }
-        return item
-    }
-
     fun incrementQuantityForItem(item: Item) {
         viewModelScope.launch {
             with(item.copy()) {
@@ -42,9 +34,20 @@ class ItemsListViewModel(private val dao: ItemsDao) : ViewModel() {
     }
 
     fun decrementQuantityForItem(item: Item) {
+        if (item.quantity == 0) return
         viewModelScope.launch {
             with(item.copy()) {
                 this.decrementQuantity()
+                if (this.quantity == 0) this.markDone()
+                dao.update(this)
+            }
+        }
+    }
+
+    fun markItemDone(item: Item) {
+        viewModelScope.launch {
+            with(item.copy()) {
+                this.markDone()
                 dao.update(this)
             }
         }
