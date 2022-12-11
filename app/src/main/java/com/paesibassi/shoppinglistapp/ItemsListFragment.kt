@@ -1,5 +1,6 @@
 package com.paesibassi.shoppinglistapp
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,7 +9,10 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.paesibassi.shoppinglistapp.databinding.FragmentItemsListBinding
 
@@ -39,28 +43,12 @@ class ItemsListFragment : Fragment() {
         }
 
         val itemClickListener: (item: Item) -> Unit = { item ->
-//            val action = ItemsListFragmentDirections.actionItemsListFragmentToItemDetailFragment(item.Id)
-//            view.findNavController().navigate(action)
             viewModel.markItemDone(item)
         }
 
         val itemLongClickListener: (item: Item) -> Boolean = { item ->
-            viewModel.removeItem(item)
-            Snackbar.make(
-                view,
-                getString(R.string.removed_item, item.name),
-                Snackbar.LENGTH_LONG
-            )
-                .setAnchorView(binding.totalCount)
-                .setAction(getString(R.string.undo_link)) {
-                    viewModel.addItem(item.name, item.quantity)
-                    Toast.makeText(
-                        activity,
-                        getString(R.string.undo_remove, item.name),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                .show()
+            val action = ItemsListFragmentDirections.actionItemsListFragmentToItemDetailFragment(item.Id)
+            view.findNavController().navigate(action)
             true // returning true to consume the click event, otherwise onClick will be called next
         }
 
@@ -82,6 +70,9 @@ class ItemsListFragment : Fragment() {
         binding.itemsList.adapter = adapter
         viewModel.items.observe(viewLifecycleOwner) {
             adapter.submitList(it)
+        }
+        this.context?.let {
+            enableSwipe(it, view, binding.itemsList, adapter)
         }
 
         // editText
@@ -106,5 +97,34 @@ class ItemsListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun enableSwipe(context: Context, view: View, recyclerView: RecyclerView, adapter: ItemsAdapter) {
+
+        class SwipeCallback: ItemTouchHelperCallback(context) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val itemPosition = viewHolder.absoluteAdapterPosition
+                val item = adapter.currentList[itemPosition]
+                viewModel.removeItem(item)
+                Snackbar.make(
+                    view,
+                    getString(R.string.removed_item, item.name),
+                    Snackbar.LENGTH_LONG
+                )
+                    .setAnchorView(binding.totalCount)
+                    .setAction(getString(R.string.undo_link)) {
+                        viewModel.addItem(item.name, item.quantity)
+                        Toast.makeText(
+                            activity,
+                            getString(R.string.undo_remove, item.name),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    .show()
+            }
+        }
+
+        val swipeCallback = SwipeCallback()
+        ItemTouchHelper(swipeCallback).attachToRecyclerView(recyclerView)
     }
 }
