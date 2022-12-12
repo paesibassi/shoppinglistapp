@@ -3,11 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ItemsListFragment">
+    tools:context=".itemsList.ItemsListFragment">
     <data>
         <variable
             name="itemsListViewModel"
-            type="com.paesibassi.shoppinglistapp.ItemsListViewModel" />
+            type="com.paesibassi.shoppinglistapp.itemsList.ItemsListViewModel" />
     </data>
 
     <LinearLayout

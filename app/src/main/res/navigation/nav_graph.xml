@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/itemsListFragment"
-        android:name="com.paesibassi.shoppinglistapp.ItemsListFragment"
+        android:name="com.paesibassi.shoppinglistapp.itemsList.ItemsListFragment"
         android:label="Shopping List"
         tools:layout="@layout/fragment_items_list" >
         <action
@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/itemDetailFragment"
-        android:name="com.paesibassi.shoppinglistapp.ItemDetailFragment"
+        android:name="com.paesibassi.shoppinglistapp.itemDetail.ItemDetailFragment"
         android:label="@string/item_detail_title"
         tools:layout="@layout/fragment_item_detail" >
         <argument

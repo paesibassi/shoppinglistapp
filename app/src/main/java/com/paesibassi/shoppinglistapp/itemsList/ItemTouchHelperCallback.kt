@@ -1,4 +1,4 @@
-package com.paesibassi.shoppinglistapp
+package com.paesibassi.shoppinglistapp.itemsList
 
 import android.content.Context
 import android.graphics.*
@@ -8,13 +8,16 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.paesibassi.shoppinglistapp.R
 
 abstract class ItemTouchHelperCallback(context: Context): ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
 
     private val clearPaint = Paint().apply {
         xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
     }
-    private val deleteDrawable = ContextCompat.getDrawable(context, R.drawable.ic_baseline_delete_outline_24)
+    private val deleteDrawable = ContextCompat.getDrawable(context,
+        R.drawable.ic_baseline_delete_outline_24
+    )
 
     override fun onMove(
         recyclerView: RecyclerView,

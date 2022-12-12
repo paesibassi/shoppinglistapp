@@ -1,4 +1,4 @@
-package com.paesibassi.shoppinglistapp
+package com.paesibassi.shoppinglistapp.itemsList
 
 import android.content.Context
 import android.os.Bundle
@@ -14,6 +14,9 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.paesibassi.shoppinglistapp.database.ItemsDatabase
+import com.paesibassi.shoppinglistapp.database.Item
+import com.paesibassi.shoppinglistapp.R
 import com.paesibassi.shoppinglistapp.databinding.FragmentItemsListBinding
 
 class ItemsListFragment : Fragment() {

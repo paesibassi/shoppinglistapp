@@ -1,4 +1,4 @@
-package com.paesibassi.shoppinglistapp
+package com.paesibassi.shoppinglistapp.itemDetail
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.paesibassi.shoppinglistapp.database.ItemsDatabase
 import com.paesibassi.shoppinglistapp.databinding.FragmentItemDetailBinding
 
 class ItemDetailFragment : Fragment() {

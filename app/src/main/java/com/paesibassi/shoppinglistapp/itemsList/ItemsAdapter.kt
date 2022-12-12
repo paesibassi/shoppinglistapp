@@ -1,10 +1,11 @@
-package com.paesibassi.shoppinglistapp
+package com.paesibassi.shoppinglistapp.itemsList
 
 import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.paesibassi.shoppinglistapp.database.Item
 import com.paesibassi.shoppinglistapp.databinding.ItemBinding
 
 class ItemsAdapter(

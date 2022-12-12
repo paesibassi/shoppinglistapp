@@ -1,6 +1,8 @@
-package com.paesibassi.shoppinglistapp
+package com.paesibassi.shoppinglistapp.itemsList
 
 import androidx.lifecycle.*
+import com.paesibassi.shoppinglistapp.database.ItemsDao
+import com.paesibassi.shoppinglistapp.database.Item
 import kotlinx.coroutines.launch
 
 class ItemsListViewModel(private val dao: ItemsDao) : ViewModel() {

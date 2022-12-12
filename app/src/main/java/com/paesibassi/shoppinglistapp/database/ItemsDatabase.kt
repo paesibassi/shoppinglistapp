@@ -1,4 +1,4 @@
-package com.paesibassi.shoppinglistapp
+package com.paesibassi.shoppinglistapp.database
 
 import android.content.Context
 import androidx.room.Database

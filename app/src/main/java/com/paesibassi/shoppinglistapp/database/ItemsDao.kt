@@ -1,4 +1,4 @@
-package com.paesibassi.shoppinglistapp
+package com.paesibassi.shoppinglistapp.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
