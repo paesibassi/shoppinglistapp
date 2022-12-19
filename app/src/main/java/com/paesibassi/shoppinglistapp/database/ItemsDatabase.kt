@@ -1,13 +1,26 @@
 package com.paesibassi.shoppinglistapp.database
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
+import androidx.room.RenameColumn
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.AutoMigrationSpec
 
-@Database(entities = [Item::class], version = 3, exportSchema = true)
-abstract class ItemsDatabase: RoomDatabase() {
+@Database(
+    entities = [Item::class],
+    version = 4,
+    autoMigrations = [
+        AutoMigration(from = 3, to = 4, spec = ItemsDatabase.MigrateItemDoneToItemCompleteColumn::class),
+    ],
+    exportSchema = true
+)
+abstract class ItemsDatabase : RoomDatabase() {
     abstract val itemsDao: ItemsDao
+
+    @RenameColumn(tableName = "items_table", fromColumnName = "done", toColumnName = "complete")
+    class MigrateItemDoneToItemCompleteColumn : AutoMigrationSpec
 
     companion object {
         @Volatile
@@ -21,7 +34,7 @@ abstract class ItemsDatabase: RoomDatabase() {
                         context.applicationContext,
                         ItemsDatabase::class.java,
                         "items_database"
-                    ).fallbackToDestructiveMigration().build()
+                    ).build()
                     INSTANCE = instance
                 }
                 return instance
