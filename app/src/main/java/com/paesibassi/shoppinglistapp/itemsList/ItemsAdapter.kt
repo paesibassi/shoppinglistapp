@@ -54,7 +54,7 @@ class ItemsAdapter(
             binding.plusButton.setOnClickListener { itemPlusButtonClickListener(item) }
             binding.minusButton.setOnClickListener { itemMinusButtonClickListener(item) }
 
-            if (item.done) {
+            if (item.complete) {
                 binding.itemName.paintFlags = (binding.itemName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG)
                 binding.itemQuantity.paintFlags = (binding.itemQuantity.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG)
             } else {
