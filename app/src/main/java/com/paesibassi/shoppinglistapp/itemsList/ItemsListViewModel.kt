@@ -3,12 +3,20 @@ package com.paesibassi.shoppinglistapp.itemsList
 import androidx.lifecycle.*
 import com.paesibassi.shoppinglistapp.database.ItemsDao
 import com.paesibassi.shoppinglistapp.database.Item
+import com.paesibassi.shoppinglistapp.firebase.CloudStore
 import kotlinx.coroutines.launch
 
 class ItemsListViewModel(private val dao: ItemsDao) : ViewModel() {
 
-    val items: LiveData<List<Item>> = dao.getAll()
-    val countItems: LiveData<Int> = Transformations.map(items) { it.size }
+//    val items: LiveData<List<Item>> = dao.getAll()
+    val firebase: LiveData<List<Item>> = CloudStore.readData()
+    val countItems: LiveData<Int> = Transformations.map(firebase) { it.size }
+
+//    init {
+//        viewModelScope.launch {
+//            firebase.value = CloudStore.readData()
+//        }
+//    }
 
     fun addItem(input: String, quantity: Int = 1) {
         if (input == "") return
@@ -18,7 +26,10 @@ class ItemsListViewModel(private val dao: ItemsDao) : ViewModel() {
             incrementQuantityForItem(currentItem!!) // we know item is not null because we already found it
         } else {
             val newItem = Item(itemName, quantity)
-            viewModelScope.launch { dao.insert(newItem) }
+            viewModelScope.launch {
+                dao.insert(newItem)
+                CloudStore.addData(newItem)
+            }
         }
     }
 

@@ -3,10 +3,11 @@ package com.paesibassi.shoppinglistapp.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.firebase.firestore.DocumentSnapshot
 
 @Entity(tableName = "items_table")
 data class Item(
-    @ColumnInfo val name: String,
+    @ColumnInfo val name: String = "",
     @ColumnInfo var quantity: Int = 1,
     @ColumnInfo var description: String? = null,
     @ColumnInfo var complete: Boolean = false,
@@ -18,5 +19,11 @@ data class Item(
 
     fun markDone() {
         this.complete = !this.complete
+    }
+
+    companion object {
+        fun DocumentSnapshot.toItem(): Item? {
+            return this.toObject(Item::class.java)
+        }
     }
 }

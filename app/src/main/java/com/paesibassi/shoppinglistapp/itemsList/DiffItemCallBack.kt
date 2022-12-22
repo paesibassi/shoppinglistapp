@@ -5,7 +5,7 @@ import com.paesibassi.shoppinglistapp.database.Item
 
 class DiffItemCallBack: DiffUtil.ItemCallback<Item>() {
     override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
-        return oldItem.Id == newItem.Id
+        return oldItem.name == newItem.name
     }
 
     override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {

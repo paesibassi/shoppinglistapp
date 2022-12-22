@@ -71,7 +71,7 @@ class ItemsListFragment : Fragment() {
             itemMinusButtonClickListener
         )
         binding.itemsList.adapter = adapter
-        viewModel.items.observe(viewLifecycleOwner) {
+        viewModel.firebase.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
         this.context?.let {
